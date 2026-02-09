@@ -38,7 +38,7 @@ screenhots/
 
 # Raw design assets (local-only).
 # Keep shipped assets under apps/web/public/ instead.
-assets/
+assets/**
 !assets/README.md
 !assets/.gitkeep
 
