@@ -8,9 +8,9 @@ export const siteConfig = {
 export const navLinks = [
   { href: "/", label: "Home" },
   { href: "/what-is-this", label: "What Is This" },
-  { href: "/for-creators", label: "For creators" },
-  { href: "/for-advertisers", label: "For advertisers" },
-  { href: "/who-are-we", label: "Who are we" },
-  { href: "/get-in-touch", label: "Get in touch" },
-  { href: "/snow-drift", label: "Snow drift" },
+  { href: "/for-creators", label: "For Creators" },
+  { href: "/for-advertisers", label: "For Advertisers" },
+  { href: "/who-are-we", label: "Who Are We" },
+  { href: "/get-in-touch", label: "Get in Touch" },
+  { href: "/snowdrift", label: "SnowDrift" },
 ] as const;
