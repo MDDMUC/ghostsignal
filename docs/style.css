@@ -1,0 +1,190 @@
+/* Brand Colors */
+:root {
+    --terra-cotta: #D66157;
+    --royal-wine: #9F71AF;
+    --persian-green: #00B29C;
+    --light-pink: #FF7BAD;
+    --old-saffron: #FBAD25;
+    
+    --text-dark: #222222;
+    --text-light: #F5F5F5;
+    --bg-white: #FFFFFF;
+    --bg-off-white: #FAFAFA;
+}
+
+/* Typography - Work Sans */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap');
+
+body {
+    font-family: 'Work Sans', sans-serif;
+    color: var(--text-dark);
+    line-height: 17pt;
+    font-size: 11pt;
+    background-color: var(--bg-white);
+    margin: 0;
+    padding: 0;
+}
+
+/* Layout */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+/* Typography Hierarchy */
+h1 {
+    font-weight: 700;
+    font-size: 38pt;
+    line-height: 46pt;
+    letter-spacing: -1.0px;
+    color: var(--royal-wine); /* Brand Highlight */
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 28pt;
+    line-height: 36pt;
+    letter-spacing: -0.5px;
+    color: var(--terra-cotta); /* Section Color */
+    margin-top: 40px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--light-pink);
+    padding-bottom: 8px;
+}
+
+h3 {
+    font-weight: 600;
+    font-size: 21pt;
+    line-height: 28pt;
+    letter-spacing: -0.25px;
+    color: var(--persian-green);
+    margin-top: 30px;
+    margin-bottom: 12px;
+}
+
+h4 {
+    font-weight: 600;
+    font-size: 16pt;
+    line-height: 22pt;
+    letter-spacing: -0.1px;
+    margin-top: 24px;
+    margin-bottom: 10px;
+}
+
+h5 {
+    font-weight: 600;
+    font-size: 12pt;
+    line-height: 18pt;
+    letter-spacing: 1.0px;
+    text-transform: uppercase;
+    color: var(--old-saffron);
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+h6 {
+    font-weight: 600;
+    font-size: 10.5pt;
+    line-height: 15pt;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+p {
+    margin-bottom: 16px;
+}
+
+.lead {
+    font-weight: 500;
+    font-size: 12.5pt;
+    line-height: 20pt;
+    color: #444;
+}
+
+blockquote {
+    font-weight: 500;
+    font-style: italic;
+    font-size: 12pt;
+    line-height: 20pt;
+    border-left: 4px solid var(--royal-wine);
+    margin: 24px 0;
+    padding-left: 20px;
+    color: var(--royal-wine);
+}
+
+.caption {
+    font-size: 9pt;
+    line-height: 12pt;
+    letter-spacing: 0.2px;
+    color: #666;
+    text-align: center;
+    margin-top: 8px;
+    display: block;
+}
+
+/* Visual Placeholders */
+.visual-block {
+    width: 100%;
+    height: 300px;
+    margin: 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.visual-title {
+    background: linear-gradient(135deg, #333 0%, #111 100%);
+}
+
+.visual-p1 {
+    background: linear-gradient(135deg, var(--terra-cotta) 0%, #a84b42 100%);
+}
+
+.visual-p2 {
+    background: linear-gradient(135deg, var(--royal-wine) 0%, #7d588a 100%);
+}
+
+.visual-p3 {
+    background: linear-gradient(135deg, var(--persian-green) 0%, #008f7d 100%);
+}
+
+.visual-p4 {
+    background: linear-gradient(135deg, var(--old-saffron) 0%, #d9931e 100%);
+}
+
+.visual-p5 {
+    background: linear-gradient(135deg, #222 0%, var(--royal-wine) 100%);
+}
+
+/* List Styling */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+}
+
+ul li::before {
+    content: "•";
+    color: var(--old-saffron);
+    font-weight: bold;
+    font-size: 1.2em;
+    position: absolute;
+    left: 0;
+    top: -2px;
+}
