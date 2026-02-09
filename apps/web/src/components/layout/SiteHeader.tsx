@@ -1,28 +1,27 @@
 import Link from "next/link";
+import Image from "next/image";
 
-import { navLinks, siteConfig } from "@/content/site";
+import { siteConfig } from "@/content/site";
+import { SiteNav } from "@/components/layout/SiteNav";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/70 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="font-semibold tracking-tight">
-          {siteConfig.name}
+    <header className="sticky top-0 z-50 bg-white">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/brand/logo-black.svg"
+            alt={siteConfig.name}
+            width={132}
+            height={24}
+            priority
+            className="h-6 w-auto"
+          />
+          <span className="sr-only">{siteConfig.name}</span>
         </Link>
 
-        <nav className="flex items-center gap-6 text-sm text-muted">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <SiteNav />
       </div>
     </header>
   );
 }
-

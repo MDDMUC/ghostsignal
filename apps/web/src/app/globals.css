@@ -18,6 +18,12 @@ body {
 }
 
 @layer base {
+  html {
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   a {
     @apply text-foreground;
   }
