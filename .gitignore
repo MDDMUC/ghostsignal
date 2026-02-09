@@ -1,4 +1,4 @@
-# OS / editor
+﻿# OS / editor
 .DS_Store
 Thumbs.db
 .idea/
@@ -35,3 +35,10 @@ extract_pdf.py
 
 # Local reference screenshots (not for repo)
 screenhots/
+
+# Raw design assets (local-only).
+# Keep shipped assets under apps/web/public/ instead.
+assets/
+!assets/README.md
+!assets/.gitkeep
+
