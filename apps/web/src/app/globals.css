@@ -17,6 +17,11 @@ body {
   font-family: var(--font-sans);
 }
 
+html.gs-cursor,
+html.gs-cursor * {
+  cursor: none !important;
+}
+
 @layer base {
   html {
     text-rendering: geometricPrecision;

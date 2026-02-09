@@ -5,7 +5,11 @@ import Link from "next/link";
 import { LottiePlayer } from "@/components/media/LottiePlayer";
 import { RainbowBars } from "@/components/brand/RainbowBars";
 import { FadeIn } from "@/components/motion/FadeIn";
+import { SplitText } from "@/components/motion/SplitText";
 import { SectionShape } from "@/components/layout/SectionShape";
+import { ChatCta } from "@/components/cta/ChatCta";
+import { Parallax } from "@/components/motion/Parallax";
+import { MaskReveal } from "@/components/motion/MaskReveal";
 
 export const metadata: Metadata = {
   title: "For creators | Ghost Signal",
@@ -22,12 +26,14 @@ export default function ForCreatorsPage() {
 
         <div className="relative mx-auto max-w-6xl px-6 pt-24 pb-28 sm:pt-28">
           <FadeIn>
-            <h1 className="max-w-2xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-              Your podcast is <br />
-              <strong className="font-bold">cultural architecture.</strong>
-              <br />
-              you are building the future.
-            </h1>
+            <SplitText
+              as="h1"
+              className="max-w-2xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl"
+              delay={0.04}
+              stagger={0.03}
+            >
+              Your podcast is cultural architecture. You are building the future.
+            </SplitText>
           </FadeIn>
           <FadeIn delay={0.08}>
             <p className="mt-8 max-w-2xl text-lg leading-8 text-white/80">
@@ -119,14 +125,18 @@ export default function ForCreatorsPage() {
       <section className="relative overflow-hidden bg-black text-white">
         <SectionShape variant="black" className="bg-white" />
         <div className="absolute inset-0 opacity-55">
-          <Image
-            src="/images/squarespace/creators/ladyshorter.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority={false}
-          />
+          <MaskReveal className="absolute inset-0" radiusPx={0} delay={0.02}>
+            <Parallax className="absolute inset-0" distance={34}>
+              <Image
+                src="/images/squarespace/creators/ladyshorter.jpg"
+                alt=""
+                fill
+                sizes="100vw"
+                className="object-cover"
+                priority={false}
+              />
+            </Parallax>
+          </MaskReveal>
           <div className="absolute inset-0 bg-black/60" />
         </div>
 
@@ -200,6 +210,8 @@ export default function ForCreatorsPage() {
           </FadeIn>
         </div>
       </section>
+
+      <ChatCta variant="white" />
     </>
   );
 }

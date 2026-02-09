@@ -4,8 +4,12 @@ import Link from "next/link";
 
 import { LottiePlayer } from "@/components/media/LottiePlayer";
 import { FadeIn } from "@/components/motion/FadeIn";
+import { SplitText } from "@/components/motion/SplitText";
 import { RainbowBars } from "@/components/brand/RainbowBars";
 import { SectionShape } from "@/components/layout/SectionShape";
+import { ChatCta } from "@/components/cta/ChatCta";
+import { MaskReveal } from "@/components/motion/MaskReveal";
+import { Parallax } from "@/components/motion/Parallax";
 
 export const metadata: Metadata = {
   title: "For advertisers | Ghost Signal",
@@ -22,9 +26,14 @@ export default function ForAdvertisersPage() {
 
         <div className="relative mx-auto max-w-6xl px-6 pt-24 pb-28 sm:pt-28">
           <FadeIn>
-            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+            <SplitText
+              as="h1"
+              className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl"
+              delay={0.04}
+              stagger={0.03}
+            >
               The right audience changes everything.
-            </h1>
+            </SplitText>
           </FadeIn>
           <FadeIn delay={0.08}>
             <p className="mt-8 max-w-3xl text-lg leading-8 text-black/70">
@@ -112,13 +121,17 @@ export default function ForAdvertisersPage() {
         <SectionShape variant="black" className="bg-white" />
 
         <div className="absolute inset-0 opacity-40">
-          <Image
-            src="/images/squarespace/advertisers/tile2.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
+          <MaskReveal className="absolute inset-0" radiusPx={0} delay={0.02}>
+            <Parallax className="absolute inset-0" distance={34}>
+              <Image
+                src="/images/squarespace/advertisers/tile2.jpg"
+                alt=""
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+            </Parallax>
+          </MaskReveal>
           <div className="absolute inset-0 bg-black/70" />
         </div>
 
@@ -214,6 +227,8 @@ export default function ForAdvertisersPage() {
           </FadeIn>
         </div>
       </section>
+
+      <ChatCta variant="white" />
     </>
   );
 }
