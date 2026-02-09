@@ -95,7 +95,7 @@ export default function WhatIsThisPage() {
               <Link href="/for-advertisers" className="group">
                 <div className="relative mx-auto aspect-square w-full max-w-[220px] overflow-hidden rounded-2xl">
                   <Image
-                    src="/images/squarespace/what-hero.jpg"
+                    src="/images/squarespace/what-card-advertisers.jpg"
                     alt=""
                     fill
                     sizes="220px"
