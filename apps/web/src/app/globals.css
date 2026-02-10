@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "../styles/generated-tokens.css";
 
 @theme inline {
   --color-background: var(--gs-background);
