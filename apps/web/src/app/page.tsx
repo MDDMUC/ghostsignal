@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { SplitLinesReveal } from "@/motion/SplitLinesReveal";
+
 const navLinks = [
   { href: "/what-is-this", label: "What is this" },
   { href: "/for-creators", label: "For Creators" },
@@ -103,26 +105,30 @@ export default function HomePage() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", rowGap: n(24) }}>
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: "var(--gs-font-weight-extrabold)",
-                fontSize: fontSize("8xl"),
-                lineHeight: "1em",
-              }}
-            >
-              GHOSTSignal
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-body)",
-                fontWeight: "var(--gs-font-weight-bold)",
-                fontSize: fontSize("8xl"),
-                lineHeight: "1em",
-              }}
-            >
-              is for people who are making the world.
-            </div>
+            <SplitLinesReveal>
+              <div
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "var(--gs-font-weight-extrabold)",
+                  fontSize: fontSize("8xl"),
+                  lineHeight: "1em",
+                }}
+              >
+                GHOSTSignal
+              </div>
+            </SplitLinesReveal>
+            <SplitLinesReveal>
+              <div
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontWeight: "var(--gs-font-weight-bold)",
+                  fontSize: fontSize("8xl"),
+                  lineHeight: "1em",
+                }}
+              >
+                is for people who are making the world.
+              </div>
+            </SplitLinesReveal>
             <div
               style={{
                 fontFamily: "var(--font-body)",
