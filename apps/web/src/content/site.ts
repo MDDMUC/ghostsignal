@@ -1,4 +1,4 @@
-﻿export const siteConfig = {
+export const siteConfig = {
   name: "Ghost Signal",
   description:
     "A values-based podcast advertising network connecting creators and brands.",
@@ -14,3 +14,4 @@ export const navLinks = [
   { href: "/get-in-touch", label: "Get In Touch" },
   { href: "/snowdrift", label: "SnowDrift" },
 ] as const;
+
