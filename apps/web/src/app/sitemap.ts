@@ -1,21 +1,22 @@
 import type { MetadataRoute } from "next";
 
-import { navLinks } from "@/content/site";
-import { getSiteUrl } from "@/lib/siteUrl";
+function getSiteUrl() {
+  // Keep this self-contained during the rebuild.
+  // In production, set NEXT_PUBLIC_SITE_URL to your canonical origin.
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const url = getSiteUrl();
   const now = new Date();
 
-  const pages = navLinks
-    .map((link) => link.href)
-    .filter((href) => href.startsWith("/"))
-    .map((href) => ({
-      url: `${url}${href === "/" ? "" : href}`,
+  // During rebuild we only expose the homepage.
+  return [
+    {
+      url,
       lastModified: now,
       changeFrequency: "weekly" as const,
-      priority: href === "/" ? 1 : 0.7,
-    }));
-
-  return pages;
+      priority: 1,
+    },
+  ];
 }

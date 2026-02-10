@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Work_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 
-const displayFont = Space_Grotesk({
+const displayFont = Inter({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["500", "700", "800"],
 });
 
-const bodyFont = Work_Sans({
+const bodyFont = Inter({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["500", "700", "800"],
 });
 
 export const metadata: Metadata = {

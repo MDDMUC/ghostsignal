@@ -1,0 +1,28 @@
+---
+description: Enforce Figma/local-token-only styling (no improvisation)
+alwaysApply: true
+---
+
+# Design fidelity rule (Ghostsignal)
+
+## Non-negotiable
+- **Do not invent or “improvise”** design values.
+- **No hard-coded styling values** (hex/rgb/hsl, px/rem/em, arbitrary Tailwind like `p-[37px]`, etc.) **unless** the value is *explicitly* defined in one of the approved sources below.
+
+## Approved sources (use these only)
+- **Local variables export**: `apps/web/public/variables/**/*.tokens.json`
+- **Generated CSS variables** derived from that export (e.g. `src/styles/generated-tokens.css`)
+- **Figma design file values** when implementing a specific frame (layout numbers, typography styles) *only if they match the frame exactly*
+- **Figma components**: if the design uses a component (e.g. Buttons), implement/compose using that component’s defined variants and tokens
+
+## Workflow requirements
+- If a needed value is missing from tokens, **stop and request it be added/exported** (or export the missing collection) rather than guessing.
+- When a Figma frame uses an image/SVG, **export it into** `apps/web/public/` with stable paths (no hotlinking), then run `npm run assets:audit`.
+- Keep the site token-first: prefer semantic tokens (e.g. background/foreground/border) over primitive palette values.
+
+## Quick checks before shipping a page
+- `npm run tokens:build`
+- `npm run assets:audit`
+- `npm run typecheck`
+- `npm run lint`
+
