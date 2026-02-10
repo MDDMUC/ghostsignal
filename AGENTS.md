@@ -44,3 +44,12 @@ If `assets:audit` reports missing files:
 - Look for the file in the raw vault `assets/` and copy it into `apps/web/public/...`.
 - Update the code to reference only `public/` paths (no hotlinking unless explicitly requested).
 
+## Motion / animation library (already implemented)
+
+This repo includes a **Motto-inspired motion library** (GSAP + ScrollTrigger patterns) that future agents should reuse instead of reinventing animations:
+
+- **Components + hooks**: `apps/web/src/motion/`
+- **Reference doc / catalog**: `apps/web/docs/MOTTO_MOTION_LIBRARY.md`
+
+If you need a new motion pattern, add it to `src/motion/` and document it in `apps/web/docs/MOTTO_MOTION_LIBRARY.md`.
+

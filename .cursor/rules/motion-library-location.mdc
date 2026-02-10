@@ -1,0 +1,16 @@
+---
+description: Where to find the motion library components/docs
+alwaysApply: true
+---
+
+# Motion library (reuse these)
+
+This codebase already contains an **extensive motion/animation component library** (built to mirror `wearemotto.com` patterns).
+
+- **Implementations**: `apps/web/src/motion/`
+- **Comprehensive list + usage**: `apps/web/docs/MOTTO_MOTION_LIBRARY.md`
+
+When adding animations:
+- Prefer composing existing motion primitives instead of inventing new ones.
+- If a new animation pattern is needed, implement it under `apps/web/src/motion/` and document it in `apps/web/docs/MOTTO_MOTION_LIBRARY.md`.
+
