@@ -2,14 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useMemo, useRef } from "react";
 
 import { gsap, ScrollTrigger } from "@/motion/gsap";
 import { useIsomorphicLayoutEffect } from "@/motion/useIsomorphicLayoutEffect";
 import { useGsapContext } from "@/motion/useGsapContext";
-
-import styles from "@/components/SiteHeader.module.css";
 
 type NavLink = { href: string; label: string };
 
@@ -32,15 +29,6 @@ export function SiteHeader({
 
   const linksWrapRef = useRef<HTMLDivElement | null>(null);
   const ctaRef = useRef<HTMLAnchorElement | null>(null);
-  const toggleRef = useRef<HTMLButtonElement | null>(null);
-
-  const menuOverlayRef = useRef<HTMLDivElement | null>(null);
-  const menuBackdropRef = useRef<HTMLDivElement | null>(null);
-  const menuPanelRef = useRef<HTMLDivElement | null>(null);
-  const menuTlRef = useRef<gsap.core.Timeline | null>(null);
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
 
   const px = "var(--gs-px)";
   const n = useMemo(() => (value: number) => `calc(var(--gs-n-${value}) * ${px})`, [px]);
@@ -60,15 +48,14 @@ export function SiteHeader({
 
     const linksWrap = linksWrapRef.current;
     const ctaEl = ctaRef.current;
-    const toggleEl = toggleRef.current;
-    const overlayEl = menuOverlayRef.current;
-    const backdropEl = menuBackdropRef.current;
-    const panelEl = menuPanelRef.current;
-    if (!linksWrap || !toggleEl || !overlayEl || !backdropEl || !panelEl) return;
+    if (!linksWrap) return;
 
     const linkEls = Array.from(linksWrap.querySelectorAll<HTMLElement>("[data-sh-link]"));
-    const menuLineEls = Array.from(panelEl.querySelectorAll<HTMLElement>("[data-mm-line]"));
-    const menuItemEls = Array.from(panelEl.querySelectorAll<HTMLElement>("[data-mm-item]"));
+    const keepLinkEl =
+      linksWrap.querySelector<HTMLElement>('[data-sh-link][data-sh-key="/get-in-touch"]') ??
+      linksWrap.querySelector<HTMLElement>('[data-sh-link][data-sh-key="/get-in-touch/"]') ??
+      null;
+    const hideLinkEls = keepLinkEl ? linkEls.filter((el) => el !== keepLinkEl) : linkEls;
     const mq = window.matchMedia("(max-width: 991px)");
 
     // All GSAP instances created in this callback will be reverted by useGsapContext.
@@ -78,43 +65,19 @@ export function SiteHeader({
         defaults: { duration: 0.75, ease: "snappy" },
       });
 
-      // Initial state matches Motto "in": toggle hidden (desktop), links visible, CTA in place.
-      // On mobile we keep the toggle visible and hide the inline links via CSS.
-      gsap.set(toggleEl, { autoAlpha: mq.matches ? 1 : 0 });
+      // Initial state: links visible, CTA in place.
       if (ctaEl) gsap.set(ctaEl, { xPercent: 0 });
       gsap.set(linkEls, { yPercent: 0, alpha: 1 });
-
-      // Mobile menu overlay initial state (closed).
-      gsap.set(overlayEl, { autoAlpha: 0 });
-      gsap.set(backdropEl, { opacity: 0 });
-      gsap.set(panelEl, { yPercent: -100 });
-      gsap.set(menuLineEls, { scaleX: 0 });
-      gsap.set(menuItemEls, { yPercent: 100, opacity: 0 });
-
-      menuTlRef.current = gsap
-        .timeline({
-          paused: true,
-          defaults: { ease: "expo" },
-          onStart: () => {
-            gsap.set(overlayEl, { autoAlpha: 1, pointerEvents: "auto" });
-          },
-          onReverseComplete: () => {
-            gsap.set(overlayEl, { autoAlpha: 0, pointerEvents: "none" });
-          },
-        })
-        .to(backdropEl, { opacity: 1, duration: 0.35, ease: "power2.out" }, 0)
-        .to(panelEl, { yPercent: 0, duration: 1.0 }, 0)
-        .to(menuLineEls, { scaleX: 1, duration: 1.25, stagger: 0.075 }, 0.15)
-        .to(menuItemEls, { yPercent: 0, opacity: 1, duration: 1.25, stagger: 0.075 }, 0.2);
+      if (hideLinkEls.length) gsap.set(hideLinkEls, { display: "inline-flex" });
     });
 
     const runOut = () => {
       document.body.classList.add("is-head-active");
       tlRef.current
         ?.clear()
-        .to(linkEls, { yPercent: -100, alpha: 0, stagger: -0.035 }, 0)
+        .to(hideLinkEls, { yPercent: -100, alpha: 0, stagger: -0.035 }, 0)
         .to(ctaEl ?? {}, { xPercent: -100 }, 0)
-        .to(toggleEl, { autoAlpha: 1 }, 0.25)
+        .set(hideLinkEls, { display: "none" }, 0.75)
         .restart();
     };
 
@@ -122,9 +85,9 @@ export function SiteHeader({
       document.body.classList.remove("is-head-active");
       tlRef.current
         ?.clear()
-        .to(toggleEl, { autoAlpha: 0, duration: 0.5 })
+        .set(hideLinkEls, { display: "inline-flex" }, 0)
         .to(ctaEl ?? {}, { xPercent: 0, duration: 1 }, 0)
-        .to(linkEls, { yPercent: 0, alpha: 1, duration: 1, stagger: 0.035, ease: "expo" }, 0)
+        .to(hideLinkEls, { yPercent: 0, alpha: 1, duration: 1, stagger: 0.035, ease: "expo" }, 0)
         .restart();
     };
 
@@ -141,14 +104,14 @@ export function SiteHeader({
     };
 
     const syncForViewport = () => {
-      // When switching to mobile, keep the toggle visible and reset the "active" body class.
+      // When switching to mobile, reset the "active" body class.
       if (mq.matches) {
         document.body.classList.remove("is-head-active");
         activeRef.current = false;
         tlRef.current?.pause(0);
-        gsap.set(toggleEl, { autoAlpha: 1 });
         if (ctaEl) gsap.set(ctaEl, { xPercent: 0 });
         gsap.set(linkEls, { yPercent: 0, alpha: 1 });
+        if (hideLinkEls.length) gsap.set(hideLinkEls, { display: "inline-flex" });
       } else {
         // Desktop: force a re-evaluation based on scroll position.
         onScroll();
@@ -182,42 +145,8 @@ export function SiteHeader({
       hideSt?.kill();
       tlRef.current?.kill();
       tlRef.current = null;
-      menuTlRef.current?.kill();
-      menuTlRef.current = null;
     };
   }, [THRESHOLD_Y, contextRef, rootRef]);
-
-  useIsomorphicLayoutEffect(() => {
-    // Close menu on route change.
-    setMenuOpen(false);
-  }, [pathname]);
-
-  useIsomorphicLayoutEffect(() => {
-    if (typeof window === "undefined") return;
-    const tl = menuTlRef.current;
-    if (!tl) return;
-
-    if (!menuOpen) {
-      document.body.style.overflow = "";
-      tl.reverse();
-      return;
-    }
-
-    document.body.style.overflow = "hidden";
-    tl.play(0);
-    // Best-effort focus for ESC handling and screen readers.
-    menuPanelRef.current?.focus();
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
 
   return (
     <div ref={rootRef} style={{ position: "sticky", top: 0, zIndex: 50 }}>
@@ -245,11 +174,13 @@ export function SiteHeader({
           }}
         >
           <Image
-            src="/images/brand/ghostsignal-logo.svg"
+            src="/images/home/onwhite.gif"
             alt="Ghost Signal"
             width={80}
             height={69}
             priority
+            unoptimized
+            style={{ display: "block" }}
           />
         </div>
 
@@ -276,6 +207,7 @@ export function SiteHeader({
                 href={l.href}
                 className="js-sh-main-link"
                 data-sh-link
+                data-sh-key={l.href}
                 style={{
                   display: "inline-flex",
                   justifyContent: "center",
@@ -330,167 +262,8 @@ export function SiteHeader({
             </Link>
           ) : null}
 
-          <button
-            ref={toggleRef}
-            type="button"
-            className="js-sh-toggle"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="gs-site-menu"
-            style={{
-              display: "inline-flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: n(36),
-              paddingTop: n(8),
-              paddingBottom: n(8),
-              paddingLeft: n(16),
-              paddingRight: n(16),
-              borderRadius: `calc(var(--gs-radius-lg) * ${px})`,
-              border: `calc(var(--gs-border-width) * ${px}) solid var(--gs-border)`,
-              background: "var(--gs-background)",
-              boxShadow: "0px 1px 2px 0px rgb(0 0 0 / 0.1)",
-              color: "var(--gs-foreground)",
-              fontFamily: "var(--font-body)",
-              fontWeight: "var(--gs-font-weight-medium)",
-              fontSize: fontSize("sm"),
-              lineHeight: "1.4285714285714286em",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}
-            onClick={() => setMenuOpen((v) => !v)}
-          >
-            {menuOpen ? "Close" : "Menu"}
-          </button>
         </div>
       </header>
-
-      <div
-        id="gs-site-menu"
-        ref={menuOverlayRef}
-        className={styles.menuOverlay}
-        aria-hidden={!menuOpen}
-      >
-        <div
-          ref={menuBackdropRef}
-          className={styles.menuBackdrop}
-          onClick={() => setMenuOpen(false)}
-        />
-
-        <div
-          ref={menuPanelRef}
-          className={styles.menuPanel}
-          tabIndex={-1}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site menu"
-        >
-          <div className={styles.menuInner}>
-            <div className={styles.menuTopRow}>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: n(8) }}>
-                <Image
-                  src="/images/brand/ghostsignal-logo.svg"
-                  alt="Ghost Signal"
-                  width={40}
-                  height={35}
-                />
-                <div
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontWeight: "var(--gs-font-weight-bold)",
-                    fontSize: fontSize("sm"),
-                  }}
-                >
-                  Ghost Signal
-                </div>
-              </div>
-
-              <button
-                type="button"
-                style={{
-                  display: "inline-flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: n(36),
-                  paddingTop: n(8),
-                  paddingBottom: n(8),
-                  paddingLeft: n(16),
-                  paddingRight: n(16),
-                  borderRadius: `calc(var(--gs-radius-lg) * ${px})`,
-                  border: `calc(var(--gs-border-width) * ${px}) solid var(--gs-border)`,
-                  background: "var(--gs-background)",
-                  boxShadow: "0px 1px 2px 0px rgb(0 0 0 / 0.1)",
-                  color: "var(--gs-foreground)",
-                  fontFamily: "var(--font-body)",
-                  fontWeight: "var(--gs-font-weight-medium)",
-                  fontSize: fontSize("sm"),
-                  lineHeight: "1.4285714285714286em",
-                  cursor: "pointer",
-                }}
-                onClick={() => setMenuOpen(false)}
-              >
-                Close
-              </button>
-            </div>
-
-            <div className={styles.menuLines} aria-hidden="true">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={styles.menuLine}
-                  data-mm-line
-                />
-              ))}
-            </div>
-
-            <nav className={styles.menuNav} aria-label="Menu">
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={styles.menuLink}
-                  onClick={() => setMenuOpen(false)}
-                  data-mm-item
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
-
-            {cta ? (
-              <div className={styles.menuCtaRow}>
-                <Link
-                  href={cta.href}
-                  style={{
-                    display: "inline-flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: n(36),
-                    paddingTop: n(8),
-                    paddingBottom: n(8),
-                    paddingLeft: n(16),
-                    paddingRight: n(16),
-                    borderRadius: `calc(var(--gs-radius-lg) * ${px})`,
-                    border: `calc(var(--gs-border-width) * ${px}) solid var(--gs-border)`,
-                    background: "var(--gs-background)",
-                    boxShadow: "0px 1px 2px 0px rgb(0 0 0 / 0.1)",
-                    color: "var(--gs-foreground)",
-                    textDecoration: "none",
-                    fontFamily: "var(--font-body)",
-                    fontWeight: "var(--gs-font-weight-medium)",
-                    fontSize: fontSize("sm"),
-                    lineHeight: "1.4285714285714286em",
-                    whiteSpace: "nowrap",
-                  }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {cta.label}
-                </Link>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

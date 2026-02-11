@@ -16,6 +16,11 @@ type Props = {
   duration?: number;
   stagger?: number;
   ease?: string;
+  /**
+   * Optional additional delay (in seconds) after the ScrollTrigger fires.
+   * Useful for sequencing multiple SplitLinesReveal blocks.
+   */
+  delay?: number;
 };
 
 /**
@@ -29,6 +34,7 @@ export function SplitLinesReveal({
   duration = 1.25,
   stagger = 0.2,
   ease = "expo",
+  delay = 0,
 }: Props) {
   const id = useId();
 
@@ -40,7 +46,16 @@ export function SplitLinesReveal({
     const splitOuter = new SplitType(el, { types: "lines" });
     const splitInner = new SplitType(splitOuter.lines ?? [], { types: "lines" });
 
-    if (splitOuter.lines?.length) gsap.set(splitOuter.lines, { overflow: "hidden" });
+    if (splitOuter.lines?.length) {
+      // Prevent descenders (e.g. "g") from getting clipped by the line mask.
+      // Use token-based spacing so we don't invent hard-coded values.
+      gsap.set(splitOuter.lines, {
+        overflow: "hidden",
+        // 8xl+ with lineHeight: 1em can clip on some renderers; give more room.
+        paddingBottom: "calc(var(--gs-n-12) * var(--gs-px))",
+        marginBottom: "calc(0px - (var(--gs-n-12) * var(--gs-px)))",
+      });
+    }
 
     const tween = gsap.fromTo(
       splitInner.lines ?? [],
@@ -50,6 +65,7 @@ export function SplitLinesReveal({
         duration,
         stagger,
         ease,
+        delay,
         scrollTrigger: { trigger: el },
       },
     );
@@ -60,7 +76,7 @@ export function SplitLinesReveal({
       splitInner.revert();
       splitOuter.revert();
     };
-  }, [duration, ease, id, stagger]);
+  }, [delay, duration, ease, id, stagger]);
 
   return <div data-gs-split={id}>{children}</div>;
 }

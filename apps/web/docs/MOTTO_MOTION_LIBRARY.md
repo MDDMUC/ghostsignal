@@ -134,6 +134,46 @@ import { SmoothScrollLenis } from "@/motion/SmoothScrollLenis";
 </SmoothScrollLenis>
 ```
 
+### `ScrollGrowToContainer`
+
+Motto-style “screen grows on scroll” behavior:
+- Starts scaled down
+- Scrubs up to a computed scale that matches the container width (measured at refresh time)
+- Optionally pins the wrapper while scaling
+
+Usage:
+
+```tsx
+import { ScrollGrowToContainer } from "@/motion/ScrollGrowToContainer";
+
+<ScrollGrowToContainer pin start="top center" end="+=140%">
+  <div>{/* image/video */}</div>
+</ScrollGrowToContainer>
+```
+
+### `ScrollGrowDockPin`
+
+Motto-like “screen grows, then docks into a new position” (single element):
+- Pin the media while scrubbing
+- Grow towards the container width
+- Then shrink + move into a dock target element
+- Remains pinned at that docked position while scrolling through the section
+
+Usage:
+
+```tsx
+import { ScrollGrowDockPin } from "@/motion/ScrollGrowDockPin";
+
+<ScrollGrowDockPin
+  dockTargetSelector="[data-gs-home-media-target]"
+  pinUntilSelector="[data-gs-home-harmony]"
+  start="top center"
+  dockAt="top center"
+>
+  <div>{/* image/video */}</div>
+</ScrollGrowDockPin>
+```
+
 ---
 
 ## Next items to mirror (not implemented yet)

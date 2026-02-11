@@ -18,20 +18,18 @@ body {
 
 /* Motto-like header effects. Motion lives in `src/components/SiteHeader.tsx`. */
 .js-sh {
-  border-bottom: 1px solid transparent;
+  border-bottom: none;
   transition:
     background-color 250ms ease,
-    border-color 250ms ease,
     box-shadow 250ms ease,
     backdrop-filter 250ms ease;
   will-change: transform;
 }
 
 body.is-head-active .js-sh {
-  background: color-mix(in srgb, var(--gs-background) 82%, transparent);
-  border-color: color-mix(in srgb, var(--gs-border) 70%, transparent);
-  box-shadow: 0px 10px 25px -15px rgb(0 0 0 / 0.25);
-  backdrop-filter: blur(14px);
+  background: var(--gs-background);
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 @supports not (backdrop-filter: blur(1px)) {
@@ -54,10 +52,6 @@ body.is-head-active .js-sh {
 }
 
 @media (max-width: 991px) {
-  .js-sh-main-links {
-    display: none !important;
-  }
-
   .js-sh-cta {
     display: none !important;
   }
